@@ -35,19 +35,30 @@ public class PessoaService {
   }
 
   public Pessoa update(Pessoa obj) {
-    Pessoa newObj = repo.findById(obj.getId());
+    Pessoa newObj = repo.findById(obj.getId().toString()).get();
+
     updateData(newObj, obj);
-    return repo.save(newObj);
+    return repo.save(obj);
   }
 
   private void updateData(Pessoa newObj, Pessoa obj) {
-    newObj.setName(obj.getName());
-    newObj.setSobrenome(obj.getSobrenome());
-    newObj.setGenero(obj.getGenero());
-    newObj.setData_nascimento(obj.getData_nascimento());
-    newObj.setInscricao(obj.getInscricao());
-    newObj.setCreated_at(obj.getCreated_at());
-    newObj.setUpdated_at(obj.getUpdated_at());
+    if (!(obj.getName() != null)) {
+      obj.setName(newObj.getName());
+    }
+
+    if (!(obj.getSobrenome() != null)) {
+      obj.setSobrenome(newObj.getSobrenome());
+    }
+
+    if (!(obj.getData_nascimento() != null)) {
+      obj.setData_nascimento(newObj.getData_nascimento());
+    }
+    if (!(obj.getGenero() != null)) {
+      obj.setGenero(newObj.getGenero());
+    }
+    if (!(obj.getInscricao() != null)) {
+      obj.setInscricao(newObj.getInscricao());
+    }
   }
 
   public Pessoa fromDTO(PessoaDTO objDto) {

@@ -5,6 +5,4 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PessoaRepository extends CrudRepository<Pessoa, String> {
-  Pessoa findById(Integer id);
-}
+public interface PessoaRepository extends CrudRepository<Pessoa, String> {}

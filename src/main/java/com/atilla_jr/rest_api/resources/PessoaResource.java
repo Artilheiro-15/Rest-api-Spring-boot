@@ -3,7 +3,6 @@ package com.atilla_jr.rest_api.resources;
 import com.atilla_jr.rest_api.DTO.PessoaDTO;
 import com.atilla_jr.rest_api.domain.Pessoa;
 import com.atilla_jr.rest_api.service.PessoaService;
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/pessoas")
@@ -39,31 +37,27 @@ public class PessoaResource {
   }
 
   @RequestMapping(method = RequestMethod.POST)
-  public ResponseEntity<Void> save(@RequestBody PessoaDTO objDto) {
+  public ResponseEntity<Pessoa> save(@RequestBody PessoaDTO objDto) {
     Pessoa obj = service.fromDTO(objDto);
     obj = service.save(obj);
-    URI uri = ServletUriComponentsBuilder
-      .fromCurrentRequest()
-      .path("/{id}")
-      .buildAndExpand(obj.getId())
-      .toUri();
-    return ResponseEntity.created(uri).build();
+
+    return ResponseEntity.ok().body(obj);
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-  public ResponseEntity<Void> delete(@PathVariable String id) {
+  public ResponseEntity<String> delete(@PathVariable String id) {
     service.delete(id);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.ok().body("Id " + id + " Deletada com sucesso!");
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-  public ResponseEntity<Void> update(
+  public ResponseEntity<Pessoa> update(
     @RequestBody PessoaDTO objDto,
     @PathVariable Integer id
   ) {
     Pessoa obj = service.fromDTO(objDto);
     obj.setId(id);
     obj = service.update(obj);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.ok().body(obj);
   }
 }
