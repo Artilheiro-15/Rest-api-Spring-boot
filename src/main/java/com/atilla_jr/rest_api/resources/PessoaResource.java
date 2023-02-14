@@ -57,7 +57,7 @@ public class PessoaResource {
   ) {
     Pessoa obj = service.fromDTO(objDto);
     obj.setId(id);
-    obj = service.update(obj);
+    obj = service.update(obj, obj);
     return ResponseEntity.ok().body(obj);
   }
 }

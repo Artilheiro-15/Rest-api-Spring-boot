@@ -4,6 +4,7 @@ import com.atilla_jr.rest_api.DTO.PessoaDTO;
 import com.atilla_jr.rest_api.domain.Pessoa;
 import com.atilla_jr.rest_api.exception.ObjectNotFoundException;
 import com.atilla_jr.rest_api.repository.PessoaRepository;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,12 +32,17 @@ public class PessoaService {
 
   public void delete(String id) {
     findById(id);
+
     repo.deleteById(id);
   }
 
-  public Pessoa update(Pessoa obj) {
-    Pessoa newObj = repo.findById(obj.getId().toString()).get();
-
+  public Pessoa update(Pessoa obj, Object id) {
+    Pessoa newObj;
+    try {
+      newObj = repo.findById(obj.getId().toString()).get();
+    } catch (NoSuchElementException e) {
+      throw new ObjectNotFoundException("Objeto não encontrado");
+    }
     updateData(newObj, obj);
     return repo.save(obj);
   }

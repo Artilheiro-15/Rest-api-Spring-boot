@@ -131,4 +131,8 @@ public class Pessoa {
     } else if (!id.equals(other.id)) return false;
     return true;
   }
+
+  public Object orElseThrow(Object object) {
+    return null;
+  }
 }
